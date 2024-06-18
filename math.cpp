@@ -269,7 +269,7 @@
 //
 //	std::cin.get();
 //}
-
+// 22
 //struct Entity
 //{
 //	int x;
@@ -319,3 +319,53 @@
 
 但如果是团队协作开发，那么强烈建议使用同步，即先拉取再推送，不然可能会出现项目中其他
 部分未和最新的云端仓库保持一致的提示。*/
+
+// 23 Local Static 
+// 而静态局部 (local static) 变量允许我们声明一个变量,它的生命周期是整个程序的生存期,
+// 但是作用域被限制在这个函数里
+
+/*
+所以 在你想要全局变量
+又不想要任何人都能访问到这个变量时
+你可以在局部作用域下面声明静态变量*/
+//void Function ()
+//{
+//	static int i = 0;
+//	int j = 0;
+//	i++;
+//	j++;
+//	std::cout << i << std::endl;
+//	std::cout << j << std::endl;
+//}
+//
+//int main()
+//{
+//	Function();
+//	Function();
+//	std::cin.get();
+//}
+
+// 单例模式
+
+class Singleton
+{
+private:
+	static Singleton* s_Instance;
+public:
+	static Singleton& Get()
+	{
+		return *s_Instance;
+	}
+
+	void Hello()
+	{
+		std::cout << "Hello" << std::endl;
+	}
+};
+Singleton* Singleton::s_Instance = nullptr;
+
+int main()
+{
+	Singleton::Get().Hello();
+	std::cin.get();
+}

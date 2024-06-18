@@ -243,7 +243,59 @@
 //	std::cin.get();
 //}
 
-struct 
-{
+//struct Entity
+//{
+//	static int x;
+//	static int y;
+//	static void Print() // 静态方法不能访问非静态变量
+//	{
+//		std::cout << x << "," << y << std::endl;
+//	}
+//};
+//
+//int Entity::x;
+//int Entity::y;
+//int main()
+//{
+//	Entity e;
+//	Entity::x = 2;
+//	Entity::y = 3;
+//	Entity::Print();
+//
+//	Entity e1;
+//	Entity::x = 5;
+//	Entity::y = 8;
+//	Entity::Print();
+//
+//	std::cin.get();
+//}
 
-};
+//struct Entity
+//{
+//	int x;
+//	int y;
+//	static void Print() // 静态方法不能访问非静态变量  静态方法没有那个隐藏参数 (this)
+//	{
+//		std::cout << x << "," << y << std::endl;
+//	}
+//};
+//
+//static void Print(Entity e) // 非静态方法的真正运行方式
+//{
+//   std::cout << e.x << ", " << e.y << std::endl;
+//}
+//
+//int main()
+//{
+//	Entity e;
+//	e.x = 2;
+//	e.y = 3;
+//	Print(e); 
+//
+//	Entity e1;
+//	e1.x = 5;
+//	e1.y = 8;
+//	Print(e1);
+//
+//	std::cin.get();
+//}

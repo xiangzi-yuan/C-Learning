@@ -404,5 +404,224 @@
 //	std::cin.get();
 //}
 
+// 25 构造函数 : 构造函数是一种特殊的方法，它在类每次实例化的时候运行,它的命名必须和类名
+// 一样
 
+//class Entity
+//{
+//public:
+//	float X, Y;
+//
+//	Entity() // 默认会有一个什么也不做的构造函数
+//	{
+//		X = 0.0f;
+//		Y = 0.0f;
+//	}
+//// 我可以写很多个构造函数,但是要给他们提供不同的参数，这个我写同名方法是一
+////  样的,其实这叫函数重载，就是相同的函数名有不同的参数的不同版本函数,
+//	Entity(float x, float y) 
+//	{
+//
+//		X = x;
+//		Y = y;
+//	}
+//	void Print()
+//	{
+//		std::cout << X << "," << Y << std::endl;
+//	}
+//};
+//class Log
+//{
+////隐藏构造函数
+////1.
+//private:
+//	Log(){}
+////2.
+//	Log() = delete;
+//};
+//int main()
+//{
+//	Log l;
+//	Entity e(10,5);
+//	e.Print();
+//
+//}
 
+// 26 析构函数(destructor)
+// 在任何时候，当一个对象被销毁的时候，析构函数都会被调用
+//class Entity
+//{
+//public:
+//	float X, Y;
+//
+//	Entity() // 默认会有一个什么也不做的构造函数
+//	{
+//		X = 0.0f;
+//		Y = 0.0f;
+//		std::cout << "Created Entity !" << std::endl;
+//	}
+//	
+//
+//	~Entity()
+//	{
+//		std::cout << "Destroyed Entity !" << std::endl;
+//	}
+//	void Print()
+//	{
+//		std::cout << X << "," << Y << std::endl;
+//	}
+//};
+//void Function()
+//{
+//	Entity e;
+//	e.Print();
+//}
+//int main()
+//{
+//	Function();
+//	std::cin.get();
+//}
+//
+// 27 继承
+//class Entity
+//{
+//public:
+//	float X, Y;
+//
+//	void Move(float xa, float ya)
+//	{
+//		X = X + xa;
+//		Y = Y + ya;
+//	}
+//};
+//class Player : public Entity
+//{
+//public:
+//	const char* Name;
+//
+//	void PrintName()
+//	{
+//		std::cout << Name << std::endl;
+//	}
+//};
+//int main()
+//{
+//	std::cout << sizeof(Player) << std::endl;
+//	Player e;
+//	e.Move(1,2);
+//	e.PrintName();
+//
+//
+//
+//	std::cin.get();
+//
+//}
+
+// 28 虚函数 ：虚函数可以让我们在子类中重写方法，B是A的子类，如果我们在A类里新建一个方
+// 法并把它标记为虚函数，我们可也在 B 类中重写这个方法让去做些其他的事情。
+//class Entity
+//{
+//public:
+//	virtual std::string GetName() { return "Entity"; }
+//	// 如果没有 virtual，会打印两次"Entity",原因是如果我们在类中正常声明函数或方法,当调用这个
+//	// 方法的时候，它总是会去调用属于这个类型的方法,看看这个PrintName函数，它的参数
+//	// 类型是Entity*,意味着它会调用Entity内部的GetName函数，它只会在Entity的内部寻
+//	// 找和调用GetName
+//
+//};
+//class Player : public Entity
+//{
+//private:
+//	std::string m_Name;
+//public:
+//	Player(const std::string& name) { m_Name = name; }
+//	std::string GetName() { return m_Name; }
+//
+//};
+//
+//void PrintName(Entity* entity)
+//{
+//	std::cout << entity->GetName() << std::endl;
+//}
+//int  main ()
+//{
+//	Entity* e = new Entity();
+//	PrintName(e);
+//
+//	Player* p = new Player("YUAN");
+//	PrintName(p);
+//	std::cin.get();
+//
+//}
+// 29 纯虚函数:在面向对象程序设计中，创建一个只包含未实现方法,然后交由子类去实际实现功能的类是非常普遍的
+
+//class Entity
+//{
+//public:
+//	virtual std::string GetName() = 0; // =0 实际上将它变成了一个纯虚函数,不可实例化,如课你想实例化这个类，那么这个函数必须
+//									   // 在子类中实现,未实现此方法的子类也不允许实例化,你只能实例化一个实现了所有纯虚函数的类
+//
+//};
+//class Player : public Entity
+//{
+//private:
+//	std::string m_Name;
+//public:
+//	Player(const std::string& name) { m_Name = name; }
+//	std::string GetName() { return m_Name; }
+//	void Sample() 
+//	{
+//
+//	}
+//
+//};
+//
+//void PrintName(Entity* entity)
+//{
+//	std::cout << entity->GetName() << std::endl;
+//}
+//int  main ()
+//{
+//
+//
+//	Player* p = new Player("YUAN");
+//	PrintName(p);
+//	std::cin.get();
+//
+//}
+// -------------------------
+class Printable
+{
+public:
+	virtual std::string GetClassName() = 0;
+};
+class Entity : public Printable
+{
+public:
+	virtual std::string GetName() { return "Entity"; }
+	std::string GetClassName() override { return "Entity"; }
+};
+class Player : public Entity
+{
+private:
+	std::string m_Name;
+public:
+	Player(const std::string& name) { m_Name = name; }
+	std::string GetName() { return m_Name; }
+	std::string GetClassName () override {return "Player";}
+	// 如果子类没有重写父类的方法，就按父类的方法打印
+};
+void Print(Printable* obj)
+{
+	std::cout << obj->GetClassName() << std :: endl;
+}
+
+int main()
+{
+	Entity* e = new Entity();
+	Entity* p = new Player("YUAN");
+	Print(e);
+	Print(p);
+	//Print(new A());
+	std::cin.get();
+}

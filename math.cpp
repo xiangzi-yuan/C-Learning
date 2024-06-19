@@ -345,27 +345,64 @@
 //	std::cin.get();
 //}
 
-// 单例模式
+// 24 ENUMS 枚举 
+// 默认情况下，第一个变量的值是 0，然后接下来变量会一个接一个的递增 (1,2,3.)
+//enum Example :int 
+//{
+//	A = 5, B, C
+//};
+//int main()
+//{
+//	if (B == 6) 
+//	{
+//		std::cout << A << std::endl;
+//	}
+//	std::cin.get();
+//}
 
-class Singleton
-{
-private:
-	static Singleton* s_Instance;
-public:
-	static Singleton& Get()
-	{
-		return *s_Instance;
-	}
 
-	void Hello()
-	{
-		std::cout << "Hello" << std::endl;
-	}
-};
-Singleton* Singleton::s_Instance = nullptr;
+//class Log
+//{
+//public:
+//	enum level // 对于普通的枚举来说，Level 不是一个命名空间
+//	{
+//		levelError, levelWarning , levelInfo
+//	};
+//private:
+//	level m_LogLevel = levelInfo; // m 前缀 A 一般表明这是个私有的类成员变量
+//public:
+//	void SetLevel(level level)
+//	{
+//		m_LogLevel = level;
+//	}
+//
+//	void Error(const char* message)
+//	{
+//		if (m_LogLevel >= levelError)
+//			std::cout << "[ERROR]:" << message << std::endl;
+//	}
+//
+//	void Warn(const char* message)
+//	{
+//		if (m_LogLevel >= levelWarning)
+//			std::cout << "[WARNING]:" << message << std::endl;
+//	}
+//	void Info(const char* message)
+//	{
+//		if (m_LogLevel >= levelInfo)
+//			std::cout << "[INFO]:" << message << std::endl;
+//	}
+//};
+//int main()
+//{
+//
+//	Log log;
+//	log.SetLevel(Log::levelError);
+//	log.Warn("Hello!");
+//	log.Error("World!");
+//	log.Info("Iloveyou!");
+//	std::cin.get();
+//}
 
-int main()
-{
-	Singleton::Get().Hello();
-	std::cin.get();
-}
+
+

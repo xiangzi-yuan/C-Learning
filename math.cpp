@@ -1,4 +1,6 @@
 #include <iostream>
+#include <array>
+#include <string>
 //void Log(const char* message);
 // int Multiply(int a, int b) {
 //	Log("Multiply");
@@ -590,38 +592,131 @@
 //
 //}
 // -------------------------
-class Printable
+//class Printable
+//{
+//public:
+//	virtual std::string GetClassName() = 0;
+//};
+//class Entity : public Printable
+//{
+//public:
+//	virtual std::string GetName() { return "Entity"; }
+//	std::string GetClassName() override { return "Entity"; }
+//};
+//class Player : public Entity
+//{
+//private:
+//	std::string m_Name;
+//public:
+//	Player(const std::string& name) { m_Name = name; }
+//	std::string GetName() { return m_Name; }
+//	std::string GetClassName () override {return "Player";}
+//	// 如果子类没有重写父类的方法，就按父类的方法打印
+//};
+//void Print(Printable* obj)
+//{
+//	std::cout << obj->GetClassName() << std :: endl;
+//}
+//
+//int main()
+//{
+//	Entity* e = new Entity();
+//	Entity* p = new Player("YUAN");
+//	Print(e);
+//	Print(p);
+//	//Print(new A());
+//	std::cin.get();
+//}
+// 30 可见性 private, protected, public
+// 父类的private只有自己和friend可以访问，连子类也不行
+// protected的意思是这舍兴以及它的所有派生类都可以访问到这些成员
+
+// 31 数组
+//class Entity
+//{
+//public:
+//	int* MemoryIndirection = new int[5];
+//	Entity ()
+//	{
+//		int a[5];
+//		int count = sizeof(a) / sizeof(int); // 栈可以用这种方式计算大小，sizeof(a)得到20
+//		int MemoryIndirectioncount = sizeof(MemoryIndirection) / sizeof(int); // 堆不能用这种方式计算大小
+//		// sizeof(MemoryIndirection) 得到了这个指针大小4
+//	    for (int i = 0; i < 5; i++)
+//		{
+//			MemoryIndirection[i] = 2;
+//			
+//		}
+//		std::cout << count << std::endl;
+//		std::cout << MemoryIndirectioncount << std::endl;
+//	}
+//
+//};
+//int main()
+//{
+//	int example[5];
+//	int* ptr = example;
+//
+//	for (int i = 0; i < 5; i++)
+//	{
+//		example[i] = 2;
+//	}
+//	example[2] = 5;
+//	*(ptr + 2) = 6; // 这么做是因为，处理指针时，只要在指针上加上像2这样的值
+//					//它会根据数据类型来计算实际的字节数所以在这里因为这个指
+//					// 针是整形指针所以会是加上2乘以4，因为每个整形是4字节
+//	*(int*)((char*)ptr + 8) = 9;
+//
+//	std::cout << example[2] << std::endl;
+//	std::cout << example << std::endl;
+//	int* another = new int[5]; //创建在堆上，它会一直存活到直到我们把它销毁或者程序结束
+//	delete[] another;
+///* 如果你有个函数要返回新创建的数组，那么你必须要使用new来分配，
+//除非你传入的参数是一个内存地址 */
+//// 另一件要考虑的是memory indirection(内存间接寻址) 
+//	Entity e;
+//
+////  Cherno's method
+//	static const int exampleSize = 5;
+//	int chernoexample[exampleSize];
+//
+////  std::array 
+//	std::array<int, 100> stdarray;
+//	std::cout << stdarray.size() << std::endl;
+//	std::cin.get();
+//}
+// 32 字符串 字符串是char组成的数组
+void Printstring(std::string string)
 {
-public:
-	virtual std::string GetClassName() = 0;
-};
-class Entity : public Printable
+	string + "h";
+	std::cout << string << std::endl;
+	// 创建的是字符串的拷贝
+}
+
+void Printstring(const std::string& string)
 {
-public:
-	virtual std::string GetName() { return "Entity"; }
-	std::string GetClassName() override { return "Entity"; }
-};
-class Player : public Entity
-{
-private:
-	std::string m_Name;
-public:
-	Player(const std::string& name) { m_Name = name; }
-	std::string GetName() { return m_Name; }
-	std::string GetClassName () override {return "Player";}
-	// 如果子类没有重写父类的方法，就按父类的方法打印
-};
-void Print(Printable* obj)
-{
-	std::cout << obj->GetClassName() << std :: endl;
+	string + "h";
+	std::cout << string << std::endl;
+	// 创建的是字符串的拷贝
 }
 
 int main()
 {
-	Entity* e = new Entity();
-	Entity* p = new Player("YUAN");
-	Print(e);
-	Print(p);
-	//Print(new A());
-	std::cin.get();
+	std::cout << sizeof(char) << std::endl;
+	std::cout << sizeof(int) << std::endl;
+	const char* name = "ch";  // C++中的字符是用单引号，不是双引号，双引号默认是 char 指针
+	// 内存为 ab a9 00 有个空终止符,内存结束的位置
+	char name2[7] = { '0','h','\0','r','n','o', 0};
+	std::cout << name2 << std::endl;
+
+	std::string name3 = "BAGA";
+	std::cout << name3 << std::endl;
+	// 字符串追加 
+	std::string name4 = "Cherno"; // 初始化字符串
+	name4 += "hello!"; // 使用 += 运算符拼接字符串
+	std::cout << name4 << std::endl;
+	std::string name5 = std::string("Cherno") + "hello!";
+	std::cout << name5 << std::endl;
+
+
 }

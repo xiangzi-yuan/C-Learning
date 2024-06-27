@@ -686,37 +686,102 @@
 //	std::cin.get();
 //}
 // 32 字符串 字符串是char组成的数组
-void Printstring(std::string string)
-{
-	string + "h";
-	std::cout << string << std::endl;
-	// 创建的是字符串的拷贝
-}
-
-void Printstring(const std::string& string)
-{
-	string + "h";
-	std::cout << string << std::endl;
-	// 创建的是字符串的拷贝
-}
-
-int main()
-{
-	std::cout << sizeof(char) << std::endl;
-	std::cout << sizeof(int) << std::endl;
-	const char* name = "ch";  // C++中的字符是用单引号，不是双引号，双引号默认是 char 指针
-	// 内存为 ab a9 00 有个空终止符,内存结束的位置
-	char name2[7] = { '0','h','\0','r','n','o', 0};
-	std::cout << name2 << std::endl;
-
-	std::string name3 = "BAGA";
-	std::cout << name3 << std::endl;
-	// 字符串追加 
-	std::string name4 = "Cherno"; // 初始化字符串
-	name4 += "hello!"; // 使用 += 运算符拼接字符串
-	std::cout << name4 << std::endl;
-	std::string name5 = std::string("Cherno") + "hello!";
-	std::cout << name5 << std::endl;
-
-
-}
+//void Printstring(std::string string)
+//{
+//	string + "h";
+//	std::cout << string << std::endl;
+//	// 创建的是字符串的拷贝
+//}
+//
+//void Printstring(const std::string& string)
+//{
+//	string + "h";
+//	std::cout << string << std::endl;
+//	// 创建的是字符串的拷贝
+//}
+//
+//int main()
+//{
+//	std::cout << sizeof(char) << std::endl;
+//	std::cout << sizeof(int) << std::endl;
+//	const char* name = "ch";  // C++中的字符是用单引号，不是双引号，双引号默认是 char 指针
+//	// 内存为 ab a9 00 有个空终止符,内存结束的位置
+//	char name2[7] = { '0','h','\0','r','n','o', 0};
+//	std::cout << name2 << std::endl;
+//
+//	std::string name3 = "BAGA";
+//	std::cout << name3 << std::endl;
+//	// 字符串追加 
+//	std::string name4 = "Cherno"; // 初始化字符串
+//	name4 += "hello!"; // 使用 += 运算符拼接字符串
+//	std::cout << name4 << std::endl;
+//	std::string name5 = std::string("Cherno") + "hello!";
+//	std::cout << name5 << std::endl;
+//
+//
+//}
+//// 33 字符串字面量
+//int main()
+//{
+//	const char* name = "Cherno";  // 指针定义
+//	std::cout << name << std::endl;
+//
+//	char name2[] = "Cherno"; // 数组定义
+//	name2[2] = 'a';
+//	//name[2] = 'a'; 不允许修改const char*以及char*
+//	std::cout << name2 << std::endl;
+//	
+//	const wchar_t* name3 = L"cherno"; //宽字符
+//	const char16_t* name4 = u"Cherno"; 
+//	//or
+//	const char* name5 = u8"Cherno";  // 指针定义
+//	const char32_t* name6 = U"Cherno";
+//	using namespace std::string_literals;
+//	std::string name7 = "Cherno"s + "yuan";
+//	const char* name8 = R"(line1
+//line2)";
+//	// ==
+//	const char* name9 = "Line1\n"
+//		"Line2\n"
+//		"Line3\n";
+//	std::cout << name8 << std::endl;
+//	std::cout << name9 << std::endl;
+//
+//	std::cin.get();
+//}
+//// 34 const : 承诺不变
+////    1. 保持常量不变
+////		const int MAX AGE 90;
+////    2. 保证指针的内容不变（不保证指针指向的位置不变）
+////      const int* a = new int;
+////       保证指针的位置不变（不保证内容）
+////      int* const a = new int;
+////      const int＊和 int const＊是同一个意思
+////      const int* const a 
+////    3. 类中的const
+////      把const放在方法名的右边，在参数列表的后面写上const
+////      顺便说一下，这只有在类里才能这么用，意味着这个方法只
+////      能从类中读取数据，不能修改数据
+//class Entity {
+//private:
+//	int m_X, m_Y;
+//	int* m_x, * m_y; //定义了两个指针
+//	int* x, y;//定义了1个指针,1个int
+//	mutable int var; //如果我们把var设置为mutable，你会看到即使在const方法中我们也可以修改的
+//public:
+//	int GetX() const 
+//	{
+//		var = 3;
+//		return m_X;
+//	}
+//	int GetX() 
+//	{
+//		return m_X;
+//	}
+//};
+//void PrintEntity(const Entity& e) 
+//{
+//	std::cout << e.GetX() << std::endl;
+//}
+//// 我没有直接修改Entity, 但是我调用了一个可以修改Entity的方法，这是不允许的
+//// 在这种情况下，它将使用GetX的const版本，否则它会用另一个

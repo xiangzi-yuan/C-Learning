@@ -785,3 +785,266 @@
 //}
 //// 我没有直接修改Entity, 但是我调用了一个可以修改Entity的方法，这是不允许的
 //// 在这种情况下，它将使用GetX的const版本，否则它会用另一个
+
+// 35 mutable : 1.把类成员标记为 mutable，意味着类中的 const 方法可以修改这个成员
+//              2.
+	               //int x = 8;
+	               //auto f = [=]() mutable {
+	               //	x++;
+	               //	std::cout << x << std::endl;
+	               //};
+// 36 构造函数初始化列表
+// 第一种初始化方法:会造成性能浪费
+//class Entity 
+//{
+//private:
+//	std::string m_Name; //第一次创建
+//public:
+//	Entity() 
+//	{
+//		m_Name = "Unknown"; //第二次创建
+//	}
+//	Entity(const std::string& name)
+//	{
+//		m_Name = name;
+//	}
+//	const std::string& GetName() const
+//	{
+//		return m_Name;
+//	}
+//};
+//int main()
+//{
+//	Entity e0;
+//	std::cout << e0.GetName() << std::endl;
+//
+//	Entity e1("Cherno");
+//	std::cout << e1.GetName() << std::endl;
+//
+//	std::cin.get();
+//}
+//
+//class Entity
+//{
+//private:
+//	std::string m_Name;
+//	int m_Score;
+//public:
+//	Entity():m_Name("Unknown"), m_Score(0) // 必须按照定义顺序初始化
+//	{
+//
+//	}
+//
+//	Entity(const std::string& name):m_Name(name)
+//	{
+//
+//	}
+//	const std::string& GetName() const
+//	{
+//		return m_Name;
+//	}
+//};
+//int main()
+//{
+//	Entity e0;
+//	std::cout << e0.GetName() << std::endl;
+//
+//	Entity e1("Cherno");
+//	std::cout << e1.GetName() << std::endl;
+//
+//	std::cin.get();
+//}
+// 37 三元运算符
+// s_Speed = s_Level > 5 ? 10 : 5;
+// std:: string rank = s_Level > 10 ? "Master" : "Beginner";
+// 嵌套 s_Speed = s_Level > 5 ? s_Level > 10 ? 15:10:5;
+// 38 创建对象
+//class Entity
+//{
+//private:
+//	std::string m_Name;
+//	int m_Score;
+//public:
+//	Entity() :m_Name("Unknown"), m_Score(0) // 必须按照定义顺序初始化
+//	{
+//
+//	}
+//
+//	Entity(const std::string& name) :m_Name(name)
+//	{
+//
+//	}
+//	const std::string& GetName() const
+//	{
+//		return m_Name;
+//	}
+//};
+//
+//void Function()
+//{
+//	Entity entity = Entity("Cherno");
+//}
+//// 如果调用函数，那么到这个大括号entity就会被销毁
+//// 让我们来写一些会运行失败的代码，作用域不一定非要
+//// 是函数也可以是if语句，甚至是空作用域，就像这样只
+//// 有一对花括号{}
+//int main()
+//{
+//	//调用方式1:栈上调用
+//	//什么时候栈分配？几乎任何时候，因为在C++中这是初始化对象最快的方式和最受管控的方式。
+//	//什么时候不栈分配？ 如果创建的对象太大，或是需要显示地控制对象的生存期，那就需要堆上创建
+//	Entity entity0;
+//	std::cout << entity0.GetName() << std::endl;
+//	Entity entity1("yuan");
+//	std::cout << entity1.GetName() << std::endl;
+//	Entity entity2 = Entity("Cherno");
+//	std::cout << entity2.GetName() << std::endl;
+//
+//	Entity* e;
+//	{
+//		Entity entity3("yuan");
+//		e = &entity3;
+//
+//	}//到这e就失效
+//	//调用方式2：堆上调用
+//	Entity* entity4 = new Entity("CHINESE");
+//	
+//	{
+//		e = entity4;
+//
+//	}
+//	std::cout << e->GetName() << std::endl;
+//	delete entity4;// 到这里e才被销毁
+//
+//
+//	std::cin.get();
+//}
+
+// 以下内容搬运自https://zhuanlan.zhihu.com/p/553387258
+//39. C++ new关键字
+//new的主要目的是分配内存，具体来说就是在堆上分配内存。
+//如果你用new和[]来分配数组，那么也用delete[]。
+//new主要就是找到一个满足我们需求的足够大的内存块，然后返回一个指向那个内存地址的指针。
+//class Entity
+//{
+//private:
+//	std::string m_Name;
+//	int m_Score;
+//public:
+//	Entity() :m_Name("Unknown"), m_Score(0) // 必须按照定义顺序初始化
+//	{
+//
+//	}
+//
+//	Entity(const std::string& name) :m_Name(name)
+//	{
+//
+//	}
+//	const std::string& GetName() const
+//	{
+//		return m_Name;
+//	}
+//};
+//int main() 
+//{
+//	int* a = new int; //这就是一个在堆上分配的4字节的整数,这个a存储的就是他的内存地址.
+//	int* b = new int[50];//在堆上需要200字节的内存。
+//	delete a;
+//	delete[] b;
+//	//在堆上分配Entity类
+//	Entity* e = new Entity();
+//	Entity* e = new Entity;//或者这我们不需要使用括号，因为他有默认构造函数。
+//	Entity* e0 = new Entity[50]; //如果我们想要一个Entity数组，我们可以这样加上方括号,
+//	//在这个数组里，你会在内存中得到50个连续的Entity
+//	delete e;
+//	delete[] e0;
+//	//在new类时，该关键字做了两件事
+//	//分配内存 调用构造函数
+//	Entity* e = new Entity();//1.分配内存 2.调用构造函数
+//	Entity* e = (Entity*)malloc(sizeof(Entity);//仅仅只是分配内存**然后给我们一个指向那个内存的指针
+//	//这两行代码之间仅有的区别就是第一行代码new调用了Entity的构造函数
+//	delete e;//new了，必须要手动清除
+//	//new 是一个操作符，就像加、减、等于一样。它是一个操作符，这意味着你可以重载这个操作符，并改变它的行为。
+//	//通常调用new会调用隐藏在里面的C函数malloc，但是malloc仅仅只是分配内存然后给我们一个指向那个内存的指针，而new不但分配内存，还会调用构造函数。同样，delete则会调用destructor析构函数。
+//	//new支持一种叫placement new的用法，这决定了他的内存来自哪里, 所以你并没有真正的分配内存。在这种情况下，你只需要调用构造函数，并在一个特定的内存地址中初始化你的Entity，可以通过些new()然后指定内存地址，例如：
+//	int* b = new int[50];
+//	Entity * entity = new(b) Entity();
+//}
+// 40:隐式转换与explicit关键字
+// 我们只有一个PrintEntity函数，但是记住，C++认为22可以转换成一个Entity
+// 因为你可以调用这个构造函数，然后把22作为他的唯一参数，就可以创建一个Entity对象
+//隐式转换
+//
+//隐式转换只能进行一次。
+
+//class Entity
+//{
+//private:
+//	std::string m_Name;
+//	int m_Age;
+//public:
+//	Entity(const std::string& name)
+//		: m_Name(name), m_Age(-1) {}
+//
+//	Entity(int age)
+//		: m_Name("Unknown"), m_Age(age) {}
+//};
+//
+//int main()
+//{
+//	Entity test1("lk");
+//	Entity test2(23);
+//	Entity test3 = "lk"; //error!只能进行一次隐式转换
+//	Entity test4 = std::string("lk");
+//	Entity test5 = 23; //发生隐式转换
+//
+//
+//	std::cin.get();
+//}
+//如上，在test5中，int型的23就被隐式转换为一个Entity对象，这是因为Entity
+// 类中有一个Entity(int age)构造函数，因此可以调用这个构造函数，然后把23
+// 作为他的唯一参数，就可以创建一个Entity对象。
+//
+//同时我们也能看到，对于语句Entity test3 = "lk"; 会报错，原因是只能进行一
+// 次隐式转换，"lk"是const char数组，这里需要先转换为std::string，再从
+// string转换为Entity变量，两次隐式转换是不行的，所以会报错。但是写为
+// Entity test4 = std::string("lk"); 就可以进行隐式转换。
+//
+//最好不写Entity test5 = 23; 这样的函数，应尽量避免隐式转换。
+// 因为Entity test2(23); 更清晰。
+//explicit 关键字
+//
+//explicit是用来当你想要显示地调用构造函数，而不是让C++编译器隐式地把任何整形转换成Entity
+//我有时会在数学运算库的地方用到explicit，因为我不想把数字和向量来比较。一般explicit很少用到。
+//如果你在构造函数前面加上explicit，这意味着这个构造函数不会进行隐式转换
+//如果你想用一个整数构造一个Entity对象，那你就必须显示的调用这个构造函数，explicit会禁用隐式转换，explicit关键字放在构造函数前面
+//#include <iostream>
+//class Entity
+//{
+//private:
+//    std::string m_Name;
+//    int m_Age;
+//public:
+//    Entity(const std::string& name)
+//        : m_Name(name), m_Age(-1) {}
+//
+//    explicit Entity(int age)  //声明为explicit
+//        : m_Name("Unknown"), m_Age(age) {}
+//};
+//
+//int main()
+//{
+//    Entity test1("lk");
+//    Entity test2(23);
+//    Entity test3 = "lk";
+//    Entity test4 = std::string("lk");
+//    Entity test5 = 23; //error！禁用隐式转换
+//
+//
+//    std::cin.get();
+//}
+//加了explicit后还想隐式转换，则可以：
+//
+//Entity test5 = (Entity)23; //ok
+
+// 41

@@ -920,11 +920,8 @@
 //	std::cin.get();
 //}
 
-// 以下内容搬运自https://zhuanlan.zhihu.com/p/553387258
-//39. C++ new关键字
-//new的主要目的是分配内存，具体来说就是在堆上分配内存。
-//如果你用new和[]来分配数组，那么也用delete[]。
-//new主要就是找到一个满足我们需求的足够大的内存块，然后返回一个指向那个内存地址的指针。
+// 39-44
+// 39 new
 //class Entity
 //{
 //private:
@@ -945,80 +942,55 @@
 //		return m_Name;
 //	}
 //};
-//int main() 
+//int main()
 //{
-//	int* a = new int; //这就是一个在堆上分配的4字节的整数,这个a存储的就是他的内存地址.
-//	int* b = new int[50];//在堆上需要200字节的内存。
+//	int* a = new int;
+//	int* b = new int[50];
 //	delete a;
 //	delete[] b;
-//	//在堆上分配Entity类
 //	Entity* e = new Entity();
-//	Entity* e = new Entity;//或者这我们不需要使用括号，因为他有默认构造函数。
-//	Entity* e0 = new Entity[50]; //如果我们想要一个Entity数组，我们可以这样加上方括号,
-//	//在这个数组里，你会在内存中得到50个连续的Entity
+//	Entity* e = new Entity;
+//	Entity* e0 = new Entity[50];//Entity数组
 //	delete e;
 //	delete[] e0;
-//	//在new类时，该关键字做了两件事
-//	//分配内存 调用构造函数
 //	Entity* e = new Entity();//1.分配内存 2.调用构造函数
-//	Entity* e = (Entity*)malloc(sizeof(Entity);//仅仅只是分配内存**然后给我们一个指向那个内存的指针
-//	//这两行代码之间仅有的区别就是第一行代码new调用了Entity的构造函数
-//	delete e;//new了，必须要手动清除
-//	//new 是一个操作符，就像加、减、等于一样。它是一个操作符，这意味着你可以重载这个操作符，并改变它的行为。
-//	//通常调用new会调用隐藏在里面的C函数malloc，但是malloc仅仅只是分配内存然后给我们一个指向那个内存的指针，而new不但分配内存，还会调用构造函数。同样，delete则会调用destructor析构函数。
-//	//new支持一种叫placement new的用法，这决定了他的内存来自哪里, 所以你并没有真正的分配内存。在这种情况下，你只需要调用构造函数，并在一个特定的内存地址中初始化你的Entity，可以通过些new()然后指定内存地址，例如：
-//	int* b = new int[50];
-//	Entity * entity = new(b) Entity();
-//}
-// 40:隐式转换与explicit关键字
-// 我们只有一个PrintEntity函数，但是记住，C++认为22可以转换成一个Entity
-// 因为你可以调用这个构造函数，然后把22作为他的唯一参数，就可以创建一个Entity对象
-//隐式转换
+//	Entity* e = (Entity*)malloc(sizeof(Entity);
+//	//仅仅只是分配内存**然后给我们一个指向那个内存的指针
+//	//这两行代码之间仅有的区别就是第一行代码new调用了
+//	// Entity的构造函数
+//	delete e;//手动清除
 //
-//隐式转换只能进行一次。
+//	int* b = new int[50];
+//	Entity* entity = new(b) Entity();
+//	// 手动分配地址
+//}
 
+// 40 C++隐式转换与explicit关键字
 //class Entity
 //{
 //private:
-//	std::string m_Name;
-//	int m_Age;
+//    std::string m_Name;
+//    int m_Age;
 //public:
-//	Entity(const std::string& name)
-//		: m_Name(name), m_Age(-1) {}
+//    Entity(const std::string& name)
+//        : m_Name(name), m_Age(-1) {}
 //
-//	Entity(int age)
-//		: m_Name("Unknown"), m_Age(age) {}
+//    Entity(int age)
+//        : m_Name("Unknown"), m_Age(age) {}
 //};
 //
 //int main()
 //{
-//	Entity test1("lk");
-//	Entity test2(23);
-//	Entity test3 = "lk"; //error!只能进行一次隐式转换
-//	Entity test4 = std::string("lk");
-//	Entity test5 = 23; //发生隐式转换
+//    Entity test1("lk");
+//    Entity test1(23);
+//    Entity test3 = "lk";// 错误，隐式转换只能进行一次
+//    // const char[] ->string->Entity
+//    Entity test4 = std::string("lk");
+//    Entity test5 = 23; //发生隐式转换
+//    // explicit会禁用隐式转换
 //
-//
-//	std::cin.get();
 //}
-//如上，在test5中，int型的23就被隐式转换为一个Entity对象，这是因为Entity
-// 类中有一个Entity(int age)构造函数，因此可以调用这个构造函数，然后把23
-// 作为他的唯一参数，就可以创建一个Entity对象。
 //
-//同时我们也能看到，对于语句Entity test3 = "lk"; 会报错，原因是只能进行一
-// 次隐式转换，"lk"是const char数组，这里需要先转换为std::string，再从
-// string转换为Entity变量，两次隐式转换是不行的，所以会报错。但是写为
-// Entity test4 = std::string("lk"); 就可以进行隐式转换。
-//
-//最好不写Entity test5 = 23; 这样的函数，应尽量避免隐式转换。
-// 因为Entity test2(23); 更清晰。
-//explicit 关键字
-//
-//explicit是用来当你想要显示地调用构造函数，而不是让C++编译器隐式地把任何整形转换成Entity
-//我有时会在数学运算库的地方用到explicit，因为我不想把数字和向量来比较。一般explicit很少用到。
-//如果你在构造函数前面加上explicit，这意味着这个构造函数不会进行隐式转换
-//如果你想用一个整数构造一个Entity对象，那你就必须显示的调用这个构造函数，explicit会禁用隐式转换，explicit关键字放在构造函数前面
-//#include <iostream>
 //class Entity
 //{
 //private:
@@ -1034,17 +1006,87 @@
 //
 //int main()
 //{
-//    Entity test1("lk");
-//    Entity test2(23);
-//    Entity test3 = "lk";
-//    Entity test4 = std::string("lk");
-//    Entity test5 = 23; //error！禁用隐式转换
 //
+//    Entity test5 = 23; //error！禁用隐式转换
+//    Entity test5 = (Entity)23; //没有隐式转换
 //
 //    std::cin.get();
 //}
-//加了explicit后还想隐式转换，则可以：
+// 41 C++运算符(操作符)及其重载
+//无重载：
+//struct Vector2
+//{
+//	float x, y;
+//	Vector2(float x, float y):x(x),y(y)
+//	{
 //
-//Entity test5 = (Entity)23; //ok
-
-// 41
+//	}
+//	Vector2 Add(const Vector2& other)const
+//	{
+//		return Vector2(x + other.x, y + other.y);
+//	}
+//	Vector2 Multiply(const Vector2& other)const
+//	{
+//		return Vector2(x * other.x, y * other.y);
+//	}
+//
+//};
+//int main()
+//{
+//	Vector2 position(4.0f, 6.0f);
+//	Vector2 speed(0.5f, 1.5f);
+//	Vector2 powerup(1.1f, 1.1f);
+//	Vector2 result1 = position.Add(speed.Multiply(powerup));// 无重载可读性较差
+//
+//}
+//重载+和*
+//struct Vector2
+//{
+//	float x, y;
+//	Vector2(float x, float y) :x(x), y(y)
+//	{
+//
+//	}
+//	Vector2 Add(const Vector2& other)const
+//	{
+//		return Vector2(x + other.x, y + other.y);
+//	}
+//	Vector2 operator+(const Vector2& other)const
+//	{
+//		return Add(other);//把“+”变成函数实现，简化代码
+//	}
+//	Vector2 Multiply(const Vector2& other)const
+//	{
+//		return Vector2(x * other.x, y * other.y);
+//	}
+//	Vector2 operator*(const Vector2& other)const
+//	{
+//		return Multiply(other);//把“+”变成函数实现，简化代码
+//	}
+//	bool operator== (const Vector2& other) const
+//	{
+//		return x == other.x && y == other.y;
+//	}
+//	bool operator!= (const Vector2& other) const
+//	{
+//		// this 是一个指针
+//		return !(*this == other);
+//	}
+//
+//};
+//
+//std::ostream& operator<< (std::ostream& stream, const Vector2& other)//第一个接受cout,第二个接受Vector2
+//{
+//	stream << other.x << "," << other.y;
+//	return stream;
+//}
+//int main()
+//{
+//	Vector2 position(4.0f, 6.0f);
+//	Vector2 speed(0.5f, 1.5f);
+//	Vector2 powerup(1.1f, 1.1f);
+//	Vector2 result1 = position+speed*powerup;// 无重载可读性较差
+//	std::cout << result1 << std::endl; //C++ 没有与这些操作数匹配的运算符 操作数类型为:  std::ostream << Vector2
+//	//因此要重载<<
+//}
+//// == 和 != 的重载

@@ -1090,3 +1090,99 @@
 //	//因此要重载<<
 //}
 //// == 和 != 的重载
+// 
+//42 this
+//C++中有this关键字，通过他我们可以访问成员函数，成员函数就是属于某个类的函数或方法。
+//this在一个const函数中，this是一个const Entity * const或者是const Entity*, 在一个非const函数中，那么它就是一个Entity* 类型的
+//在函数内部，我们可以引用this，this是指向这个函数所属的当前对象实例的指针
+//class Entity 
+//{
+//public:
+//	int x, y;
+//	Entity(int x, int y):x(x), y(y) 
+//	{
+//
+//	}
+//	//or
+//	Entity(int x, int y) 
+//	{
+//		this->x = x;
+//		//等价于
+//		Entity* e = this;
+//		e->x = x;
+//	}
+//	int Get() const
+//	{
+//		const Entity* e = this;//ok
+//		e->x = 5;//ERROR！函数不能具有修改功能
+//
+//
+//	}
+//};
+//另一个用到的场景就是，如果我们想要调用这个Entity类外面的函数，
+//他不是Entity的方法，但是我们想在这个类内部调用一个外部的函数，
+//然后这个函数接受一个Entity类型作为参数，这时候就可以使用this
+//class Entity;  //前置声明。
+//void PrintEntity(Entity* e); //在这里声明
+//class Entity
+//{
+//public:
+//    int x, y;
+//    Entity(int x, int y)
+//    {
+//        // Entity* e = this;
+//        this->x = x;
+//        this->y = y;
+//        PrintEntity(this); //我们希望能在这个类里调用PrintEntity,就可以传入this，这就会传入我已经设置了x和y的当前实例
+//    }
+//};
+//void PrintEntity(Entity* e) //在这里定义
+//{
+//    //print something
+//}
+
+//or
+//class Entity
+//{
+//public:
+//    int x, y;
+//    Entity(int x, int y)
+//    {
+//        // Entity* e = this;
+//        this->x = x;
+//        this->y = y;
+//        PrintEntity(*this); //解引用
+//    }
+//};
+//void PrintEntity(const Entity& e) //在这里定义
+//{
+//    //print something
+//}
+//void PrintEntity(const Entity& e);
+//class Entity
+//{
+//public:
+//    int x, y;
+//    Entity(int x, int y)
+//    {
+//        // Entity* e = this;
+//        this->x = x;
+//        this->y = y;
+//        Entity& e = *this;  //在非const函数里通过解引用this，我们就可赋值给Entity&
+//        PrintEntity(*this); //解引用this
+//    }
+//    int GetX() const
+//    {
+//        const Entity& e = *this; //在const方法中，我们会得到一个const引用
+//    }
+//};
+//void PrintEntity(const Entity& e)
+//{
+//    //print something
+//}
+// 43 生存期
+    
+
+
+
+// 44 智能指针

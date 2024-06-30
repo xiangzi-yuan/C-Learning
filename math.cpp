@@ -1181,8 +1181,124 @@
 //    //print something
 //}
 // 43 生存期
-    
-
-
-
+// 如下代码，因为我们没有使用new关键字，所以他不是在堆上分
+// 配的，我们只是在栈上分配了这个数组，当我们返回一个指向
+// 他的指针时(return array)，也就是返回了一个指向栈内存
+// 的指针，旦离开这个作用域（CreateArray函数的作用域），
+// 这个栈内存就会被回收
+//int CreateArray()
+//{
+//	int array[50];  //在栈上创建的
+//	return array;
+//}
+//int main()
+//{
+//	int* a = CreateArray(); //不能正常工作
+//}
+//
+// 正确做法1：
+//int* CreateArray()
+//{
+//	int* array = new int[50];  //在堆上创建的
+//	return array;
+//}
+//// 正确做法2：将创建的数组赋值给一个在这个作用域外的变量
+//int CreateArray(int* array)
+//{
+//	//填充数组
+//}
+//int main()
+//{
+//	int array[50];
+//	CreateArray(array); //不能正常工作
+//}
+//class Entity
+//{
+//private:
+//
+//public:
+//    Entity()
+//    {
+//        std::cout << "Create!" << std::endl;
+//    }
+//    ~Entity()
+//    {
+//        std::cout << "Destroy!" << std::endl;
+//    }
+//};
+//
+//class ScopedPtr
+//{
+//private:
+//    Entity* m_Ptr;
+//public:
+//    ScopedPtr(Entity* ptr)
+//        : m_Ptr(ptr)
+//    {
+//    }
+//
+//    ~ScopedPtr()
+//    {
+//        delete m_Ptr;
+//    }
+//};
+//
+//int main()
+//{
+//    {
+//        ScopedPtr test = new Entity();  
+//        //发生隐式转换  。虽然这里是new创建的，但是不同的是一旦超出这个作用域，
+//        // 他就会被销毁。因为这个ScopedPtr类的对象是在栈上分配的
+//    }
+//    //ScopedPtr test = new Entity();
+//    //这里的 new Entity() 创建了一个 Entity 对象并返回一个指向该对象的指针，类型为 Entity* 。然后这个指针被隐式转换为一个 ScopedPtr 对象。
+//    //具体来说，这里发生了从 Entity* 到 ScopedPtr 的隐式转换，这种转换通过 ScopedPtr 类的构造函数来实现：
+//    //ScopedPtr(Entity * ptr)
+//    //    : m_Ptr(ptr)
+//    //{
+//    //}
+//    //这意味着 new Entity() 返回的指针被传递给 ScopedPtr 的构造函数，构造函数将该指针赋值给其成员变量 m_Ptr。当 test 这个 ScopedPtr 对象超出
+//    //作用域时，其析构函数被调用，进而删除 m_Ptr 指向的 Entity 对象，确保资源被正确释放。
+//    std::cin.get();
+//}
 // 44 智能指针
+//1.unique_ptr
+// 要访问所有这些智能指针，你首先要做的是包含memory头文件
+// unique_ptr是作用域指针，意味着超出作用域时，它会被销毁
+//    然后调用delete。
+// unique_ptr是唯一的，不可复制，不可分享。
+// unique_ptr构造函数实际上是explicit的，没有构造函数的
+//    隐式转换,需要显式调用构造函数。
+//#include <memory>
+//class Entity
+//{
+//private:
+//
+//public:
+//    Entity()
+//    {
+//        std::cout << "Create!" << std::endl;
+//    }
+//
+//    ~Entity()
+//    {
+//        std::cout << "Destroy!" << std::endl;
+//    }
+//    void Print() {}
+//};
+//
+//int main()
+//{
+//    {
+//        std::unique_ptr<Entity> entity = new Entity(); //error!unique_ptr不能隐式转换
+//        std::unique_ptr<Entity> entity(new Entity()); //可以但不建议
+//        std::unique_ptr<Entity> entity = std::make_unique<Entity>();
+//        entity->Print();  //像一般原始指针使用
+//
+//
+//    }
+//}
+// 2.shared_ptr
+//std::shared_ptr<Entity> sharedEntity = std::make_shared<Entity>();//ok
+//3. weak_ptr
+//std::shared_ptr<Entity> sharedEntity = std::make_shared<Entity>();

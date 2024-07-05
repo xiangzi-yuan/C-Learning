@@ -1508,23 +1508,24 @@ vertices.push_back({ 7, 8, 9 });
 // 不修改时使用引用传参void Function(const std::vector<T>&vec) {};
 //-----------------------
 //48 动态数组的优化
-int i = 0;
-struct Vertex
-{
-    float x, y, z;
-    
-    Vertex(float x, float y, float z)
-        : x(x), y(y), z(z)
-    {
-    }
-
-    Vertex(const Vertex& vertex)
-        : x(vertex.x), y(vertex.y), z(vertex.z)
-    {
-        i++;
-        std::cout << i << std::endl;
-    }
-};
+//int i = 0;
+//#define GLFW_DLL
+//struct Vertex
+//{
+//    float x, y, z;
+//    
+//    Vertex(float x, float y, float z)
+//        : x(x), y(y), z(z)
+//    {
+//    }
+//
+//    Vertex(const Vertex& vertex)
+//        : x(vertex.x), y(vertex.y), z(vertex.z)
+//    {
+//        i++;
+//        std::cout << i << std::endl;
+//    }
+//};
 
 //int main()
 //{

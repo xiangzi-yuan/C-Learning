@@ -671,7 +671,7 @@
 //	std::cout << example << std::endl;
 //	int* another = new int[5]; //创建在堆上，它会一直存活到直到我们把它销毁或者程序结束
 //	delete[] another;
-///* 如果你有个函数要返回新创建的数组，那么你必须要使用new来分配，
+// /* 如果你有个函数要返回新创建的数组，那么你必须要使用new来分配，
 //除非你传入的参数是一个内存地址 */
 //// 另一件要考虑的是memory indirection(内存间接寻址) 
 //	Entity e;
@@ -1575,9 +1575,33 @@ std::vector<Entity> e;
 //    std::cin.get();
 //}
 // 49 静态库
-#include "GLFW/glfw3.h"
-int main() 
-{
-    int a = glfwInit();
-    std::cin.get();
-}
+//#include "GLFW/glfw3.h"
+//int main() 
+//{
+//    int a = glfwInit();
+//    std::cin.get();
+//}
+// 52 多返回值
+//std::array<std::string,2> function()
+//{
+//    ...
+//    std::array<std::string, 2>results;
+//    results[0] = vs;
+//    results[1] = fs;
+//    return results;
+//}
+// 53
+//#include <iostream>
+//#include <string>
+//
+//template<typename T>
+//
+//void Print(T value)
+//{
+//    std::cout << valu << std::endl;
+//}
+//
+//int main() 
+//{
+//    std::cin.get();
+//}

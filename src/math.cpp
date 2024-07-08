@@ -1582,26 +1582,354 @@ std::vector<Entity> e;
 //    std::cin.get();
 //}
 // 52 多返回值
-//std::array<std::string,2> function()
-//{
-//    ...
-//    std::array<std::string, 2>results;
-//    results[0] = vs;
-//    results[1] = fs;
-//    return results;
-//}
-// 53
-//#include <iostream>
-//#include <string>
+// 法一:传引用然后修改,而不是直接返回多个
+#if 0
+void GetUserAge(const std::string& user_name, bool& work_status, int& age)
+{
+    if (user_name.compare("Cherno") == 0)
+    {
+        work_status = true;
+        age = 18;
+    }
+    else
+    {
+        work_status = false;
+        age = -1;
+    }
+}
+int main()
+{
+    bool work_status = false;
+    int age = -1;
+    GetUserAge("Cherno", work_status, age);
+    std::cout << work_status<< '\n' << age << std::endl;  // 确实造成了work_status 和 age 的修改
+    std::cin.get();
+
+}
+
+
+//-------使用指针同理---------
+void GetUserAge(const std::string& user_name, bool* work_status, int* age)
+{
+    if (user_name.compare("Cherno") == 0)
+    {
+        *work_status = true;
+        *age = 18;
+    }
+    else
+    {
+        *work_status = false;
+        *age = -1;
+    }
+}
+int main()
+{
+    bool work_status_value; // 在栈上声明变量
+    int age_value;
+    bool* work_status = &work_status_value; // 获取变量的地址
+    int* age = &age_value;
+    GetUserAge("Cherno", work_status, age);
+    std::cout << *work_status << '\n' << *age << std::endl;
+    std::cin.get();
+}
++
+#endif
+
+#if 0
+// 法二:通过函数的返回值是一个array（数组）或vector(array会更快)
+std::array<std::string, 2> ChangeString() {
+    std::string a = "ssss";
+    std::string b = "2";
+
+    std::array<std::string, 2> result;
+    result[0] = a;
+    result[1] = b;
+    return result;
+    //也可以return std::array<std::string, 2>(a, b);
+}
+#endif 
+
+#if 0
+//---------------------------
+std::vector<std::string> ChangeString() {
+    std::string a = "Cherno";
+    std::string b = "yuan";
+
+    std::vector<std::string> result;
+    result.push_back(a);
+    result.push_back(b);
+    return result;
+    //也可以return std::array<std::string, 2>(a, b);
+}
+#endif 
+
+#if 0
+int main()
+{
+    std::array<std::string,2> vec = ChangeString();
+    std::cout << vec[0] << vec[1] << std::endl;
+    std::cin.get();
+}
+#endif
+
+// 法三:使用std::pair
+// 只包含两个元素。
+//两个元素的类型可以不同。
+//提供了简单的接口来访问第一个和第二个元素。
+#if 0
+std::pair<bool, int> GetUserAge(const std::string& user_name)
+{
+    std::pair<bool, int> result;
+    if (user_name.compare("Cherno") == 0)
+    {
+        result = std::make_pair(true, 18);
+    }
+    else
+    {
+        result = std::make_pair(false, -1);
+    }
+    return result;
+}
+
+int main()
+{
+    std::pair<bool, int> result = GetUserAge("Cherno");
+    std::cout << result.first << result.second << std::endl;
+    std::cin.get();
+}
+
+
+#endif
+
+// 法四:使用std::tuple
+// 可以包含任意数量的元素。
+// 每个元素的类型可以不同。
+// 提供了访问元素的方法，包括通过 std::get和std::tie。
+#include <tuple>
+#if 0
+ std::tuple<bool, int, int> GetUserAge(const std::string& user_name)
+{
+    std::tuple<bool, int, int> result;
+
+    if (user_name.compare("Cherno") == 0)
+    {
+        result = std::make_tuple(true, 18, 0);
+    }
+    else
+    {
+        result = std::make_tuple(false, -1, 0);
+    }
+    return result;
+}
+
+int main()
+{
+    std::tuple<bool, int, int> result = GetUserAge("Cherno");
+    bool work_status;
+    int age;
+    int user_id;
+
+    std::tie(work_status, age, user_id) = result;
+    std::cout << "查询结果：" << work_status << "    " << "年龄：" << age << "   " << "用户id:" << user_id << std::endl;
+    getchar();
+    return 0;
+}
+#endif
+
+// 法五:返回一个结构体
+#if 0
+struct result {
+    std::string str;
+    int val;
+};
+result Function() {
+    return { "1",1 };
+    //C++新特性，可以直接这样子让函数自动补全成结构体
+}
+int main() {
+    auto temp = Function();
+    std::cout << temp.str << ' ' << temp.val << std::endl;
+}
+
+# endif
+
+// 53 模板
+#if 0
+// 函数模板
+template<typename T>
+void Print(T value)
+{
+    std::cout << value << std::endl;
+}
+
+int main() 
+{
+    Print(1);
+    Print("hello");
+    Print(5.5);
+    std::cin.get();
+    Print(96);//这里其实是隐式的传递信息给模板，可读性不高
+    Print<int>(96);//可以显示的定义模板参数，声明函数接受的形参的类型！！！
+    Print<char>(96);//输出的可以是数字，也可以是字符！这样的操纵性强了很多！
+}
+#endif
+
+// 类模板
+#if 0
+template <int N> 
+class Array {
+private:
+    int m_Array[N];
+};
+int main() {
+    Array<5> array;
+}
+#endif
+
+#if 0
+template<typename T, int size> class Array {
+private:
+    T m_Array[size];
+};
+int main() {
+    Array<int, 5> array;
+}
+#endif
+
+//55 C++的宏
+#if 0 
+#defind WAIT std::cin.get()
+//这里可以不用放分号，如果放分号就会加入宏里面了
+int main() {
+    WAIT;
+    //等效于std::cin.get()，属于纯文本替换
+    //但单纯做这种操作是很愚蠢的，除了自己以外别人读代码会特别痛苦
+}
+#endif
+#if 0
+//宏是可以传递参数的，虽然参数也是复制粘贴替换上去的，并没有像函数那样讲究
+#define log(x) std::cout << x << std::endl
+int main() {
+    log("hello");
+    //这样子会输出“hello”
+    return 0;
+}
+#endif
+#if 0
+#include <iostream>
+
+#defind PR_DEBUG 1 //可以在这里切换成0，作为一个开关
+#if PR_DEBUG == 1   //如果PR_DEBUG为1
+#defind LOG(x) std::cout << x << std::endl  //则执行这个宏
+#else   //反之
+#defind LOG(x)   //这个宏什么也不定义，即是无意义
+#endif    //结束
+
+int main() {
+    LOG("hello");
+    return 0;
+}
+#endif
+
+// 56 auto
+// 57 静态数组,大小不可变
+//1.std::array是一个实际的标准数组类，是C++标准模板库的一部分。
 //
-//template<typename T>
+//2.静态的是指不增长的数组，当创建array时就要初始化其大小，不可再改变。
 //
-//void Print(T value)
-//{
-//    std::cout << valu << std::endl;
-//}
+//3.使用格式
+#if 0
+int main()
+{
+    std::array<int, 5> data;
+    data[0] = 1;
+    data[4] = 10;
+    return 0;
+}
+#endif
+
+//4.array和原生数组都是创建在栈上的（vector是在堆上创建底层数据储存的）
 //
-//int main() 
-//{
-//    std::cin.get();
-//}
+//5.原生数组越界的时候不会报错，而array会有越界检查，会报错提醒。
+//
+//6.使用std::array的好处是可以访问它的大小（通过size()函数），它是一个类。
+#if 0
+void PrintArray(const std::array<int, 5>& data)
+{
+    for (int i = 0; i < data.size(); i++)
+    {
+        std::cout << data[i] << std::endl;
+
+    }
+}
+int main()
+{
+    std::array<int, 5> data;
+    for (int i = 0; i < 5; i++)
+    {
+        data[i] = i;
+    }
+    PrintArray(data);
+}
+#endif
+// 如何传入一个标准数组作为参数，但不知道数组的大小？
+// typename为T
+#if 0
+template <typename T>
+void PrintArray(const T& data)
+{
+    for (int i = 0; i < data.size(); i++)
+    {
+        std::cout << data[i] << std::endl;
+        // 假定 size 和 [] 存在,不建议
+    }
+}
+int main()
+{
+    std::array<int, 5> data;
+    for (int i = 0; i < 5; i++)
+    {
+        data[i] = i;
+    }
+    PrintArray(data);
+}
+#endif
+#if 0
+template <typename T,int size>
+void PrintArray(const std::array<T,size>& data)
+{
+    for (int i = 0; i < data.size(); i++)
+    {
+        std::cout << data[i] << std::endl;
+        // 假定 size 和 [] 存在,不建议
+    }
+    for (int i = 0; i < size; i++)
+    {
+        std::cout << data[i] << std::endl;
+        // 假定 size 和 [] 存在,不建议
+    }
+}
+int main()
+{
+    std::array<int, 5> data;
+    for (int i = 0; i < 5; i++)
+    {
+        data[i] = i;
+    }
+    PrintArray(data);
+}
+#endif
+// 58 C语言风格的函数指针
+#if 0
+#endif
+#if 0
+#endif
+#if 0
+#endif
+// 59 lamda
+#if 0
+#endif
+// 60 using namespace std
+// using namespace xxx可以将xxx::yyy 简化为 yyy
+// 尽量少用,别在头文件用
+// 使用namespace可能会使原本发生隐式转换切换成不需要隐式转换的另一个库的函数
